@@ -2,9 +2,9 @@
 session_start();
 
 $pdo = new PDO(
-  'mysql:host=localhost;dbname=YOUR_DB;charset=utf8',
-  'YOUR_USER',
-  'YOUR_PASS'
+  'mysql:host=localhost;dbname=u82373;charset=utf8',
+  'u82373',
+  '4362231'
 );
 
 if ($_SERVER['REQUEST_METHOD']=='POST') {
