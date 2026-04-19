@@ -3,9 +3,9 @@ session_start();
 header('Content-Type: text/html; charset=UTF-8');
 
 $pdo = new PDO(
-  'mysql:host=localhost;dbname=YOUR_DB;charset=utf8',
-  'YOUR_USER',
-  'YOUR_PASS',
+  'mysql:host=localhost;dbname=u82373;charset=utf8',
+  'u82373',
+  '4362231',
   [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
 );
 
@@ -36,7 +36,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
   }
 
   if (isset($_SESSION['user_id'])) {
-
     $stmt = $pdo->prepare("SELECT * FROM applications WHERE id=?");
     $stmt->execute([$_SESSION['user_id']]);
     $row = $stmt->fetch();
@@ -51,9 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
       'contract'=>1,
       'languages'=>$pdo->query("SELECT language_id FROM application_languages WHERE application_id=".$row['id'])->fetchAll(PDO::FETCH_COLUMN)
     ];
-
   } else {
-
     $values = [
       'fio' => $_COOKIE['fio_value'] ?? '',
       'phone' => $_COOKIE['phone_value'] ?? '',
@@ -179,3 +176,4 @@ if (isset($_SESSION['user_id'])) {
 }
 
 header("Location: index.php");
+exit();
