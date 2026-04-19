@@ -3,98 +3,95 @@ $values = $values ?? [];
 $errors = $errors ?? [];
 $messages = $messages ?? [];
 ?>
-
-<html>
+<!DOCTYPE html>
+<html lang="ru">
 <head>
-<meta charset="UTF-8">
-<style>
-body{font-family:sans-serif;background:#eef2f3;display:flex;justify-content:center;padding:20px;}
-form{background:#fff;padding:25px;border-radius:10px;max-width:500px;width:100%;box-shadow:0 4px 15px rgba(0,0,0,.1);}
-.field{margin-bottom:15px;}
-label{font-weight:bold;display:block;margin-bottom:5px;}
-input,select,textarea{width:100%;padding:10px;border:1px solid #ccc;border-radius:6px;}
-.error{border:2px solid #e74c3c;}
-.error-msg{margin-top:5px;font-size:12px;color:#c0392b;background:#fff5f5;border:1px solid #ffcccc;padding:6px;border-radius:6px;}
-.success{margin-bottom:15px;background:#e6ffed;border:1px solid #b7f5c5;color:#1e7e34;padding:10px;border-radius:6px;}
-button{width:100%;padding:12px;background:#28a745;color:white;border:none;border-radius:6px;}
-.radio{display:flex;gap:10px;}
-</style>
+    <meta charset="UTF-8">
+    <title>Задание 5</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; display: flex; justify-content: center; padding: 40px 20px; }
+        .container { background: white; padding: 30px; border-radius: 12px; max-width: 500px; width: 100%; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
+        .auth-btn { text-decoration: none; padding: 6px 12px; border-radius: 6px; font-size: 14px; font-weight: 500; }
+        .login-btn { color: #007bff; border: 1px solid #007bff; }
+        .logout-btn { color: #dc3545; border: 1px solid #dc3545; }
+        .field { margin-bottom: 18px; }
+        label { display: block; font-weight: 600; margin-bottom: 8px; color: #444; }
+        input[type="text"], input[type="email"], input[type="date"], select, textarea { 
+            width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; 
+        }
+        .error-field { border-color: #dc3545 !important; background: #fff8f8; }
+        .error-text { color: #dc3545; font-size: 12px; margin-top: 5px; }
+        .msg-box { padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; line-height: 1.5; }
+        .msg-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        button[type="submit"] { 
+            width: 100%; padding: 14px; background: #28a745; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s; 
+        }
+        button:hover { background: #218838; }
+        .radio-group { display: flex; gap: 20px; }
+    </style>
 </head>
-
 <body>
-
-<?php if (isset($_SESSION['user_id'])): ?>
-<a href="?logout=1">Выйти</a>
-<?php else: ?>
-<a href="login.php">Войти</a>
-<?php endif; ?>
-
-<form method="POST" novalidate>
-
-<?php if (!empty($messages)): ?>
-<div class="success"><?= $messages[0] ?></div>
-<?php endif; ?>
-
-<div class="field">
-<label>ФИО</label>
-<input name="fio" value="<?= htmlspecialchars($values['fio']) ?>" class="<?= isset($errors['fio'])?'error':'' ?>">
-<?php if(isset($errors['fio'])): ?><div class="error-msg"><?= $_COOKIE['fio_error'] ?></div><?php endif; ?>
-</div>
-
-<div class="field">
-<label>Телефон</label>
-<input name="phone" value="<?= htmlspecialchars($values['phone']) ?>" class="<?= isset($errors['phone'])?'error':'' ?>">
-<?php if(isset($errors['phone'])): ?><div class="error-msg"><?= $_COOKIE['phone_error'] ?></div><?php endif; ?>
-</div>
-
-<div class="field">
-<label>Email</label>
-<input name="email" value="<?= htmlspecialchars($values['email']) ?>" class="<?= isset($errors['email'])?'error':'' ?>">
-<?php if(isset($errors['email'])): ?><div class="error-msg"><?= $_COOKIE['email_error'] ?></div><?php endif; ?>
-</div>
-
-<div class="field">
-<label>Дата рождения</label>
-<input type="date" name="birth_date" value="<?= $values['birth_date'] ?>" class="<?= isset($errors['birth'])?'error':'' ?>">
-<?php if(isset($errors['birth'])): ?><div class="error-msg"><?= $_COOKIE['birth_error'] ?></div><?php endif; ?>
-</div>
-
-<div class="field">
-<label>Пол</label>
-<div class="radio">
-<label><input type="radio" name="gender" value="male" <?= $values['gender']=='male'?'checked':'' ?>> М</label>
-<label><input type="radio" name="gender" value="female" <?= $values['gender']=='female'?'checked':'' ?>> Ж</label>
-</div>
-<?php if(isset($errors['gender'])): ?><div class="error-msg"><?= $_COOKIE['gender_error'] ?></div><?php endif; ?>
-</div>
-
-<div class="field">
-<label>Языки</label>
-<select name="languages[]" multiple size="6">
-<?php foreach($langs as $id=>$name): ?>
-<option value="<?= $id ?>" <?= in_array($id,$values['languages'])?'selected':'' ?>><?= $name ?></option>
-<?php endforeach; ?>
-</select>
-<?php if(isset($errors['languages'])): ?><div class="error-msg"><?= $_COOKIE['languages_error'] ?></div><?php endif; ?>
-</div>
-
-<div class="field">
-<label>Биография</label>
-<textarea name="biography"><?= htmlspecialchars($values['biography']) ?></textarea>
-<?php if(isset($errors['bio'])): ?><div class="error-msg"><?= $_COOKIE['bio_error'] ?></div><?php endif; ?>
-</div>
-
-<div class="field">
-<label>
-<input type="checkbox" name="contract" <?= !empty($values['contract'])?'checked':'' ?>>
-Согласен
-</label>
-<?php if(isset($errors['contract'])): ?><div class="error-msg"><?= $_COOKIE['contract_error'] ?></div><?php endif; ?>
-</div>
-
-<button type="submit">Сохранить</button>
-
-</form>
-
+    <div class="container">
+        <div class="header">
+            <span style="font-size: 18px; font-weight: bold;">Анкета</span>
+            <?php if (isset($_SESSION['user_id'])): ?>
+                <a href="?logout=1" class="auth-btn logout-btn">Выйти (ID: <?= $_SESSION['user_id'] ?>)</a>
+            <?php else: ?>
+                <a href="login.php" class="auth-btn login-btn">Войти</a>
+            <?php endif; ?>
+        </div>
+        <form method="POST">
+            <?php foreach ($messages as $msg): ?>
+                <div class="msg-box msg-success"><?= $msg ?></div>
+            <?php endforeach; ?>
+            <div class="field">
+                <label>ФИО</label>
+                <input name="fio" value="<?= htmlspecialchars($values['fio'] ?? '') ?>" class="<?= isset($errors['fio'])?'error-field':'' ?>">
+                <?php if(isset($errors['fio'])): ?><div class="error-text"><?= htmlspecialchars($_COOKIE['fio_error'] ?? '') ?></div><?php endif; ?>
+            </div>
+            <div class="field">
+                <label>Телефон</label>
+                <input name="phone" value="<?= htmlspecialchars($values['phone'] ?? '') ?>" class="<?= isset($errors['phone'])?'error-field':'' ?>">
+                <?php if(isset($errors['phone'])): ?><div class="error-text"><?= htmlspecialchars($_COOKIE['phone_error'] ?? '') ?></div><?php endif; ?>
+            </div>
+            <div class="field">
+                <label>Email</label>
+                <input name="email" type="email" value="<?= htmlspecialchars($values['email'] ?? '') ?>" class="<?= isset($errors['email'])?'error-field':'' ?>">
+                <?php if(isset($errors['email'])): ?><div class="error-text"><?= htmlspecialchars($_COOKIE['email_error'] ?? '') ?></div><?php endif; ?>
+            </div>
+            <div class="field">
+                <label>Дата рождения</label>
+                <input name="birth_date" type="date" value="<?= htmlspecialchars($values['birth_date'] ?? '') ?>" class="<?= isset($errors['birth'])?'error-field':'' ?>">
+                <?php if(isset($errors['birth'])): ?><div class="error-text"><?= htmlspecialchars($_COOKIE['birth_error'] ?? '') ?></div><?php endif; ?>
+            </div>
+            <div class="field">
+                <label>Пол</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="gender" value="male" <?= ($values['gender'] ?? '') == 'male' ? 'checked' : '' ?>> М</label>
+                    <label><input type="radio" name="gender" value="female" <?= ($values['gender'] ?? '') == 'female' ? 'checked' : '' ?>> Ж</label>
+                </div>
+            </div>
+            <div class="field">
+                <label>Языки программирования</label>
+                <select name="languages[]" multiple size="6" class="<?= isset($errors['languages'])?'error-field':'' ?>">
+                    <?php foreach ($langs as $id => $name): ?>
+                        <option value="<?= $id ?>" <?= in_array($id, $values['languages'] ?? []) ? 'selected' : '' ?>><?= $name ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="field">
+                <label>Биография</label>
+                <textarea name="biography" rows="4" class="<?= isset($errors['bio'])?'error-field':'' ?>"><?= htmlspecialchars($values['biography'] ?? '') ?></textarea>
+            </div>
+            <div class="field">
+                <label style="font-weight: normal; font-size: 14px;">
+                    <input type="checkbox" name="contract" <?= !empty($values['contract']) ? 'checked' : '' ?>> Согласен с условиями
+                </label>
+                <?php if(isset($errors['contract'])): ?><div class="error-text"><?= htmlspecialchars($_COOKIE['contract_error'] ?? '') ?></div><?php endif; ?>
+            </div>
+            <button type="submit"><?= isset($_SESSION['user_id']) ? 'Обновить данные' : 'Отправить' ?></button>
+        </form>
+    </div>
 </body>
 </html>
