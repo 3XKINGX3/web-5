@@ -21,7 +21,7 @@ $messages = $messages ?? [];
             width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; 
         }
         .error-field { border-color: #dc3545 !important; background: #fff8f8; }
-        .error-text { color: #dc3545; font-size: 12px; margin-top: 5px; }
+        .error-text { color: #dc3545; font-size: 12px; margin-top: 5px; font-weight: 500; }
         .msg-box { padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 14px; line-height: 1.5; }
         .msg-success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         button[type="submit"] { 
@@ -71,6 +71,7 @@ $messages = $messages ?? [];
                     <label><input type="radio" name="gender" value="male" <?= ($values['gender'] ?? '') == 'male' ? 'checked' : '' ?>> М</label>
                     <label><input type="radio" name="gender" value="female" <?= ($values['gender'] ?? '') == 'female' ? 'checked' : '' ?>> Ж</label>
                 </div>
+                <?php if(isset($errors['gender'])): ?><div class="error-text"><?= htmlspecialchars($_COOKIE['gender_error'] ?? 'Выберите пол') ?></div><?php endif; ?>
             </div>
             <div class="field">
                 <label>Языки программирования</label>
@@ -79,10 +80,12 @@ $messages = $messages ?? [];
                         <option value="<?= $id ?>" <?= in_array($id, $values['languages'] ?? []) ? 'selected' : '' ?>><?= $name ?></option>
                     <?php endforeach; ?>
                 </select>
+                <?php if(isset($errors['languages'])): ?><div class="error-text"><?= htmlspecialchars($_COOKIE['languages_error'] ?? '') ?></div><?php endif; ?>
             </div>
             <div class="field">
                 <label>Биография</label>
                 <textarea name="biography" rows="4" class="<?= isset($errors['bio'])?'error-field':'' ?>"><?= htmlspecialchars($values['biography'] ?? '') ?></textarea>
+                <?php if(isset($errors['bio'])): ?><div class="error-text"><?= htmlspecialchars($_COOKIE['bio_error'] ?? '') ?></div><?php endif; ?>
             </div>
             <div class="field">
                 <label style="font-weight: normal; font-size: 14px;">
